@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>冠傑的網站</title>
+<style>
+  :root{--bg:#0f1220;--card:#1a1f36;--text:#f2f4fa;--muted:#9aa3c2;--accent:#ff6a1a;--accent2:#ffb347}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+  header{text-align:center;padding:56px 20px 40px;background:linear-gradient(135deg,#1d2350,#ff6a1a 140%)}
+  header h1{font-size:clamp(1.8rem,5vw,3rem);letter-spacing:2px}
+  header p{color:#e6e9f7;margin-top:8px}
+  nav{position:sticky;top:0;z-index:10;display:flex;justify-content:center;flex-wrap:wrap;gap:6px 20px;background:#0b0d1a;padding:10px}
+  nav a{color:var(--muted);text-decoration:none;padding:4px 10px;border-radius:6px}
+  nav a:hover{color:#fff;background:var(--accent)}
+  main{max-width:1000px;margin:0 auto;padding:30px 18px}
+  section{background:var(--card);border-radius:16px;padding:26px;margin-bottom:28px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+  h2{color:var(--accent2);margin-bottom:14px;border-left:5px solid var(--accent);padding-left:12px}
+  .photo img{width:100%;max-height:480px;object-fit:cover;border-radius:12px;display:block}
+  .photo figcaption{color:var(--muted);text-align:center;margin-top:8px;font-size:.9rem}
+  .video{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden}
+  .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .charts{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .chart-box{background:#12162b;border-radius:12px;padding:14px}
+  .chart-box h3{font-size:1rem;text-align:center;margin-bottom:8px}
+  canvas{width:100%;height:auto;display:block}
+  .note{color:var(--muted);font-size:.85rem;margin-top:10px}
+  .btns{display:flex;flex-wrap:wrap;gap:14px}
+  .btns button{flex:1 1 220px;padding:14px 18px;font-size:1rem;font-family:inherit;color:#fff;background:var(--accent);border:0;border-radius:10px;cursor:pointer;transition:.2s}
+  .btns button:hover{background:var(--accent2);color:#111;transform:translateY(-2px)}
+  footer{text-align:center;color:var(--muted);padding:24px;font-size:.85rem}
+  @media(max-width:760px){.charts{grid-template-columns:1fr}section{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>41543111</h1>
+</header>
+<nav>
+  <a href="#photo">照片</a><a href="#video">影片</a><a href="#chart">統計圖表</a><a href="#friends">同學網站</a>
+</nav>
+<main>
+  <section id="photo">
+    <h2>孫哥愛的凝視</h2>
+    <figure class="photo">
+      <img src="images.png" alt="我最喜歡的NBA照片">
+    </figure>
+  </section>
+
+  <section id="video">
+    <h2>影片</h2>
+    <div class="video">
+      <iframe src="https://www.youtube.com/embed/KZyvVepObr8?si=85UocYt_Y0RBYiAR"
+        title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section id="chart">
+    <h2>NBA 球星統計圖表</h2>
+    <div class="charts">
+      <div class="chart-box"><h3>生涯場均得分（近似值）</h3><canvas id="bar" width="460" height="340"></canvas></div>
+      <div class="chart-box"><h3>總冠軍戒指數</h3><canvas id="pie" width="460" height="340"></canvas></div>
+    </div>
+  </section>
+
+  <section id="friends">
+    <h2>網站超連結</h2>
+    <div class="btns">
+      <button onclick="go('https://a2008022719790104-droid.github.io/NFU-work/')">前往同學一的網站</button>
+      <button onclick="go('https://bm-architect.wixsite.com/bmportfilio')">前往BM的作品集</button>
+      <button onclick="go('https://jjkke645.github.io/assdd/index.html')">前往同學三的網站</button>
+    </div>
+  </section>
+</main>
+
+<script>
+function go(url){ window.open(url,'_blank','noopener'); }
+
+const colors=['#ff6a1a','#ffb347','#4ecdc4','#6c8cff','#e85d9b'];
+
+function drawBar(){
+  const c=document.getElementById('bar'),x=c.getContext('2d'),W=c.width,H=c.height;
+  const data=[['Jordan',30.1],['Wilt',30.0],['Durant',27.2],['LeBron',27.1],['Kobe',25.0],['Curry',24.7]];
+  x.clearRect(0,0,W,H);
+  const L=40,B=H-40,T=20,max=35,bw=(W-L-10)/data.length;
+  x.font='13px sans-serif';x.strokeStyle='#2c3254';x.fillStyle='#9aa3c2';
+  for(let v=0;v<=max;v+=5){const y=B-(B-T)*v/max;x.beginPath();x.moveTo(L,y);x.lineTo(W-5,y);x.stroke();x.fillText(v,8,y+4);}
+  data.forEach((d,i)=>{
+    const h=(B-T)*d[1]/max,px=L+i*bw+bw*0.15,w=bw*0.7;
+    x.fillStyle=colors[i%colors.length];x.fillRect(px,B-h,w,h);
+    x.fillStyle='#f2f4fa';x.textAlign='center';
+    x.fillText(d[1],px+w/2,B-h-6);x.fillText(d[0],px+w/2,B+18);
+  });
+  x.textAlign='left';
+}
+
+function drawPie(){
+  const c=document.getElementById('pie'),x=c.getContext('2d'),W=c.width,H=c.height;
+  const data=[['Jordan',6],['Kobe',5],['Duncan',5],['LeBron',4],['Curry',4]];
+  const total=data.reduce((s,d)=>s+d[1],0);
+  const cx=W*0.36,cy=H/2,r=Math.min(W,H)*0.38;
+  x.clearRect(0,0,W,H);
+  let a=-Math.PI/2;
+  data.forEach((d,i)=>{
+    const s=d[1]/total*Math.PI*2;
+    x.beginPath();x.moveTo(cx,cy);x.arc(cx,cy,r,a,a+s);x.closePath();
+    x.fillStyle=colors[i];x.fill();x.strokeStyle='#12162b';x.lineWidth=2;x.stroke();
+    const m=a+s/2;x.fillStyle='#fff';x.font='bold 15px sans-serif';x.textAlign='center';
+    x.fillText(d[1],cx+Math.cos(m)*r*0.65,cy+Math.sin(m)*r*0.65+5);
+    a+=s;
+  });
+  x.textAlign='left';x.font='14px sans-serif';
+  data.forEach((d,i)=>{
+    const ly=60+i*38;x.fillStyle=colors[i];x.fillRect(W*0.72,ly-12,16,16);
+    x.fillStyle='#f2f4fa';x.fillText(d[0],W*0.72+24,ly+1);
+  });
+}
+drawBar();drawPie();
+</script>
+</body>
+</html>
